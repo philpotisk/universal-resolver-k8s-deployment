@@ -7,7 +7,7 @@ import yaml
 import subprocess
 
 # CONSTANTS you may need to change:
-DEFAULT_DOMAIN_NAME = 'dev.uniresolver.io'
+DEFAULT_DOMAIN_NAME = 'uniresolver.com'
 UNIVERSAL_RESOLVER_FRONTEND_TAG = "universalresolver/uni-resolver-frontend:latest;"
 
 
@@ -33,16 +33,19 @@ def getContainerNameVersion(containterTag):
   return containerNameVersion.split(':')
 
 def generateDeploymentSpecs(containterTags, outputdir):
+    containerPort = '8080'
     for containterTag in containterTags.split(';'):
         if (containterTag == ''):
           return
         containerName, containerVersion = getContainerNameVersion(containterTag)
         fin = open("k8s-template.yaml", "rt")
         deploymentFile = "deployment-%s.yaml" % containerName
+        if (containterTag == UNIVERSAL_RESOLVER_FRONTEND_TAG.replace(';','')):
+          containerPort = '80'
         fout = open(outputdir + '/' + deploymentFile, "wt")
         print('Writing file: ' + outputdir + '/' + deploymentFile + ' for containter: ' + containterTag)
         for line in fin:
-            fout.write(line.replace('{{containerName}}', containerName).replace('{{containterTag}}', containterTag))
+            fout.write(line.replace('{{containerName}}', containerName).replace('{{containterTag}}', containterTag).replace('{{containerPort}}', containerPort))
         addDeployment(containerName, deploymentFile, outputdir)
         fin.close()
         fout.close()
@@ -96,7 +99,7 @@ def generateIngress(containterTags, outputdir):
     fout.write('          - path: /*\n')
     fout.write('            backend:\n')
     fout.write('              serviceName: "uni-resolver-frontend"\n')
-    fout.write('              servicePort: 8080\n')
+    fout.write('              servicePort: 80\n')
 
     for containterTag in containterTags.split(';'):
       if (containterTag == ''):
@@ -151,4 +154,3 @@ def main(argv):
 
 if __name__ == "__main__":
    main(sys.argv[1:])
-   print ('TODO manually: change uni-resolver-frontend ingress port to 80!!')

@@ -14,3 +14,14 @@ kubectl version --client --short
 python --version
 
 python convert.py
+
+cd out
+
+kubectl get all --all-namespaces
+
+./deploy.sh
+
+kubectl apply -f uni-resolver-ingress.yaml
+
+kubectl get all --all-namespaces
+
