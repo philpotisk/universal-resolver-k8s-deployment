@@ -21,7 +21,11 @@ kubectl version --client --short
 
 python --version
 
+cp /convert.py /k8s-template.yaml . 2>/dev/null || :
+
 python convert.py
+
+ls -al
 
 cd out
 
