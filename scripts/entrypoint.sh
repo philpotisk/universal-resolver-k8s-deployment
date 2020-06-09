@@ -9,6 +9,8 @@ ls -al
 echo "$KUBE_CONFIG_DATA" | base64 --decode > /tmp/config
 export KUBECONFIG=/tmp/config
 
+ls -al
+
 kubectl version --client --short
 
 python --version
