@@ -16,7 +16,11 @@ export KUBECONFIG=/tmp/config
 
 cat /tmp/config
 
+echo $KUBECONFIG
+
 kubectl version --client --short
+
+echo "kubectl get all --all-namespaces"
 
 kubectl get all --all-namespaces
 
