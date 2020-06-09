@@ -8,28 +8,27 @@ pwd
 
 ls -al
 
-ls -al ~
-
 ls -al /
 
 
 echo "$KUBE_CONFIG_DATA" | base64 --decode > /tmp/config
 export KUBECONFIG=/tmp/config
 
+cat /tmp/config
 
 kubectl version --client --short
 
-python --version
+kubectl get all --all-namespaces
 
 cp /convert.py /k8s-template.yaml . 2>/dev/null || :
+
+python --version
 
 python convert.py
 
 ls -al
 
 cd out
-
-kubectl get all --all-namespaces
 
 ./deploy.sh
 
