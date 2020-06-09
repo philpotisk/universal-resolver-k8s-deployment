@@ -23,3 +23,32 @@ Run:
 
     cd scripts
     ./entrypoint.sh
+
+
+## Usage as GitHub Action
+
+Github Action workflow-file:
+
+```
+name: CI/CD Workflow for universal-resolver
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Deploy to AWS
+      uses: philpotisk/universal-resolver-k8s-deployment@master
+      env:
+        KUBE_CONFIG_DATA: ${{secrets.KUBE_CONFIG_DATA}}
+        AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
+        AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+```
