@@ -4,18 +4,16 @@ echo "Kubernetes Deployment of the Universal Resolver"
 
 set -e
 
-pwd 
+pwd
 
-ls -al
-
-ls -al /
-
+base64 --version
 
 echo "$KUBE_CONFIG_DATA" | base64 --decode > /tmp/config
 export KUBECONFIG=/tmp/config
 
+echo "cat /tmp/config"
 cat /tmp/config
-
+echo "echo KUBECONFIG"
 echo $KUBECONFIG
 
 kubectl version --client --short
